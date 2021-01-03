@@ -1,5 +1,5 @@
 # hello-world
-Tools that makes you look forward to the future. You are on the right track here.
+Tools that make you look forward to the future. You are on the right track here.
 
 Hi Humans!
 
