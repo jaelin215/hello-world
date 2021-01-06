@@ -3,6 +3,7 @@ import sys, os
 import click
 import csv
 import datetime
+from jinja2 import Template
 from PyPDF2 import PdfFileMerger
 
 
@@ -55,9 +56,18 @@ def extract_from_csv(path_csv):
 
         return rn_number, event_number, event_title, mpl_status, trades, date_sent_to_trades, rfq_due_date, lundy_markup, date_created, field_change, schedule_impact_days, total_amount, date_sent_to_owner, date_approved_by_owner, co_number, printed_date_today, trades_with_pricing
 
+
+def split_trade(csv_data):
+    each_trade = csv_data[16].split(",")
+    each_trade_item = each_trade[:]
+    
+    return each_trade_item
+
 def fill_doc():
     csv_data = extract_from_csv('revision.csv')
     # import pdb; pdb.set_trace()
+
+    each_trade_item = split_trade(csv_data)   
     
     data = {
         
@@ -77,10 +87,11 @@ def fill_doc():
         "date_approved_by_owner": csv_data[13],
         "co_number": csv_data[14],
         "printed_date_today": csv_data[15],
-        "trades_with_pricing": csv_data[16]
+        "trades_with_pricing": csv_data[16],
+        "each_trade_item": each_trade_item
         # "change_source_issued_date": csv_data[9]
     }
-   
+
     doc = DocxTemplate("templates/pco_template.docx")
     context = data
     doc.render(context)
@@ -103,6 +114,17 @@ def fill_doc():
     print(csv_data[11])
     print("------------------------------\n")
 
+    # t=0
+    # for t in each_trade:
+    #     each_trade = csv_data[16].split(",")
+    #     print("trade: " + each_trade[t])
+    #     t += 1
+
+    print(" \n")
+
+
+
 if __name__ == '__main__':
       fill_doc()
+      
    
